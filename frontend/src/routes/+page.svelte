@@ -1,2 +1,10 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+    import Task from '../components/Task.svelte';
+</script>
+
+<div class="flex flex-row">
+    <Task color="red" />
+    <Task color="amber" />
+    <Task color="emerald" />
+    <Task color="emerald" />
+</div>
