@@ -1,5 +1,4 @@
 <script lang="ts">
-    export let color: 'emerald' | 'amber' | 'red' = 'emerald';
     export let title: string;
     export let content: string;
     export let createdAt: string;
@@ -11,7 +10,7 @@
     class:opacity-40={completed}
 >
     <header
-        class="bg-slate-700 justify-between items-center flex flex-row w-full py-2 px-4 border-b-2 border-b-{color}-400"
+        class="bg-slate-700 justify-between items-center flex flex-row w-full py-2 px-4 border-b-2 border-b-emerald-400"
     >
         <h4 class="flex text-xl">{title}</h4>
         <button class="flex align-middle"
