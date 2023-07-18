@@ -1,5 +1,5 @@
-use axum::extract::{Json, State};
-use axum::{http::StatusCode, routing::get, Router};
+use axum::extract::{Json, Path, State};
+use axum::{http::StatusCode, routing::delete, routing::get, Router};
 use serde::{Deserialize, Serialize, Serializer};
 use sqlx::postgres::PgPoolOptions;
 use sqlx::types::chrono::NaiveDateTime;
@@ -7,9 +7,6 @@ use sqlx::{FromRow, PgPool};
 use std::env;
 use std::net::SocketAddr;
 use tower_http::cors::CorsLayer;
-
-mod errors;
-mod server;
 
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {
@@ -32,6 +29,7 @@ async fn main() -> Result<(), sqlx::Error> {
     let app = Router::new()
         .route("/", get(root))
         .route("/tasks", get(all_tasks).post(create_task))
+        .route("/tasks/:id", delete(delete_task))
         .with_state(db)
         .layer(cors);
 
@@ -67,7 +65,6 @@ struct TodoTask {
     pub content: Option<String>,
 }
 
-#[axum_macros::debug_handler]
 async fn all_tasks(
     State(db): State<PgPool>,
 ) -> Result<(StatusCode, Json<Vec<TodoTask>>), (StatusCode, String)> {
@@ -76,6 +73,22 @@ async fn all_tasks(
     let tasks = query.fetch_all(&db).await;
 
     match tasks {
+        Ok(result) => Ok((StatusCode::OK, Json(result))),
+        Err(err) => Err((StatusCode::INTERNAL_SERVER_ERROR, err.to_string())),
+    }
+}
+
+async fn delete_task(
+    State(db): State<PgPool>,
+    Path(id): Path<i32>,
+) -> Result<(StatusCode, Json<TodoTask>), (StatusCode, String)> {
+    let query = "DELETE FROM tasks WHERE id = $1 RETURNING *";
+    let result = sqlx::query_as::<_, TodoTask>(query)
+        .bind(id)
+        .fetch_one(&db)
+        .await;
+
+    match result {
         Ok(result) => Ok((StatusCode::OK, Json(result))),
         Err(err) => Err((StatusCode::INTERNAL_SERVER_ERROR, err.to_string())),
     }
