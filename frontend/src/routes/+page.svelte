@@ -1,24 +1,26 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
     import Task from '../components/Task.svelte';
-    import { todoTasks } from '../store';
+    import Modal from '../components/Modal.svelte';
 
-    onMount(async () => {
-        fetch('http://localhost:3000/tasks')
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                todoTasks.set(data);
-            })
-            .catch((error) => {
-                console.log(error);
-                return [];
-            });
-    });
+    export let data;
+
+    let showModal = false;
+
+    function handleKeydown(event: KeyboardEvent) {
+        if (event.key === 'n') {
+            showModal = true;
+        }
+    }
 </script>
 
-<div class="flex flex-row">
-    {#each $todoTasks as task}
+<svelte:window on:keydown={handleKeydown} />
+
+<button on:click={() => (showModal = true)}> show modal </button>
+
+<Modal bind:showModal />
+
+<div class="flex flex-row flex-wrap">
+    {#each data.todoTasks as task}
         <Task
             title={task.title}
             content={task.content}

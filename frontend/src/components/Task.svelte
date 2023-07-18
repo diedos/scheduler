@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { fly, slide } from 'svelte/transition';
+
     export let title: string;
     export let content: string;
     export let createdAt: string;
@@ -8,6 +10,8 @@
 <div
     class="bg-slate-800 flex aspect-square flex-col border-t border-l border-t-slate-600 border-l-slate-600 rounded-xl text-slate-300 overflow-hidden"
     class:opacity-40={completed}
+    in:fly={{ y: 20 }}
+    out:slide
 >
     <header
         class="bg-slate-700 justify-between items-center flex flex-row w-full py-2 px-4 border-b-2 border-b-emerald-400"
