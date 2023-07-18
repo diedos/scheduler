@@ -22,7 +22,7 @@
         <Task
             title={task.title}
             content={task.content}
-            createdAt={task.created_at}
+            createdAt={task.createdAt}
             completed={task.completed}
         />
     {/each}
