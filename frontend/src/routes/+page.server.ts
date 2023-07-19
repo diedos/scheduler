@@ -22,5 +22,11 @@ export const actions = {
                 estimate: data.get('estimate')
             })
             .catch((err) => console.error(err));
+    },
+    delete: async ({ request }) => {
+        const data = await request.formData();
+        axios
+            .delete('http://127.0.0.1:3000/tasks/' + data.get('id'))
+            .catch((err) => console.error(err));
     }
 };
