@@ -1,7 +1,7 @@
 <script lang="ts">
-    import Task from '../components/Task.svelte';
-    import Modal from '../components/Modal.svelte';
-    import AddTask from '../components/AddTask.svelte';
+    import Task from 'components/Task.svelte';
+    import Modal from 'components/Modal.svelte';
+    import AddTask from 'components/AddTask.svelte';
 
     export let data;
 
@@ -28,7 +28,7 @@
             title={task.title}
             content={task.content || ''}
             createdAt={task.createdAt}
-            completed={task.completed}
+            completedAt={task.completedAt}
             deadlineAt={task.deadlineAt}
         />
     {/each}

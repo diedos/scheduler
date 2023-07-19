@@ -23,6 +23,12 @@ export const actions = {
             })
             .catch((err) => console.error(err));
     },
+    complete: async ({ request }) => {
+        const data = await request.formData();
+        axios
+            .post(`http://127.0.0.1:3000/tasks/${data.get('id')}/complete`)
+            .catch((err) => console.error(err));
+    },
     delete: async ({ request }) => {
         const data = await request.formData();
         axios

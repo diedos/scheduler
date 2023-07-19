@@ -1,8 +1,8 @@
 <script>
     import '../app.css';
-    import NavButton from '../components/NavButton.svelte';
-    import NextTask from '../components/NextTask.svelte';
-    import ToolBox from '../components/ToolBox.svelte';
+    import NavButton from 'components/NavButton.svelte';
+    import NextTask from 'components/NextTask.svelte';
+    import ToolBox from 'components/ToolBox.svelte';
 
     function toggleDarkMode() {
         window.document.body.classList.toggle('dark');
@@ -15,7 +15,7 @@
     >
         <section class="flex flex-col w-full space-y-4">
             <NavButton title="Current task" />
-            <NavButton title="All tasks" />
+            <NavButton href="/" title="All tasks" />
         </section>
         <section class="flex flex-col w-full space-y-4">
             <NavButton onClick={toggleDarkMode} title="Toggle dark mode" />

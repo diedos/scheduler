@@ -1,4 +1,5 @@
 use axum::extract::{Json, Path, State};
+use axum::routing::post;
 use axum::{http::StatusCode, routing::delete, routing::get, Router};
 use serde::{Deserialize, Serialize, Serializer};
 use sqlx::postgres::PgPoolOptions;
@@ -29,7 +30,8 @@ async fn main() -> Result<(), sqlx::Error> {
     let app = Router::new()
         .route("/", get(root))
         .route("/tasks", get(all_tasks).post(create_task))
-        .route("/tasks/:id", delete(delete_task))
+        .route("/tasks/:id", get(get_task).delete(delete_task))
+        .route("/tasks/:id/complete", post(complete_task))
         .with_state(db)
         .layer(cors);
 
@@ -94,6 +96,22 @@ async fn delete_task(
     }
 }
 
+async fn complete_task(
+    State(db): State<PgPool>,
+    Path(id): Path<i32>,
+) -> Result<(StatusCode, Json<TodoTask>), (StatusCode, String)> {
+    let query = "UPDATE tasks SET completed_at = NOW() WHERE id = $1";
+    let result = sqlx::query_as::<_, TodoTask>(query)
+        .bind(id)
+        .fetch_one(&db)
+        .await;
+
+    match result {
+        Ok(result) => Ok((StatusCode::OK, Json(result))),
+        Err(err) => Err((StatusCode::INTERNAL_SERVER_ERROR, err.to_string())),
+    }
+}
+
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct CreateTaskPayload {
@@ -101,6 +119,22 @@ struct CreateTaskPayload {
     content: Option<String>,
     deadline_at: Option<String>,
     estimate: Option<i16>,
+}
+
+async fn get_task(
+    State(db): State<PgPool>,
+    Path(id): Path<i32>,
+) -> Result<(StatusCode, Json<TodoTask>), (StatusCode, String)> {
+    let query = "SELECT * FROM tasks WHERE id = $1";
+    let result = sqlx::query_as::<_, TodoTask>(query)
+        .bind(id)
+        .fetch_one(&db)
+        .await;
+
+    match result {
+        Ok(result) => Ok((StatusCode::OK, Json(result))),
+        Err(err) => Err((StatusCode::INTERNAL_SERVER_ERROR, err.to_string())),
+    }
 }
 
 async fn create_task(
