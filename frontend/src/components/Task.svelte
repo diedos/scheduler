@@ -19,7 +19,7 @@
 
 <a
     href="/tasks/{id}"
-    class="bg-gray-50 border-t-white text-gray-800 dark:bg-slate-800 flex flex-row w-full border-t dark:border-t-slate-600 rounded-xl dark:text-slate-300 overflow-hidden items-center px-4 py-2"
+    class="bg-gray-50 border-t-white text-gray-800 dark:bg-slate-800 flex flex-row w-full border-t dark:border-t-slate-600 dark:text-slate-300 overflow-hidden items-center px-6 py-4"
     class:opacity-40={completedAt}
     in:fly={{ y: 20 }}
     out:slide

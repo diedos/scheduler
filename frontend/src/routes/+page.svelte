@@ -21,7 +21,7 @@
 
 <AddTask show={showAddTask} />
 
-<div class="space-y-2">
+<div class="">
     {#each data.todoTasks as task (task.id)}
         <Task
             id={task.id}

@@ -7,7 +7,7 @@
 
 {#if show}
     <section
-        class="bg-gray-50 text-gray-800 dark:bg-slate-800 flex flex-col rounded-xl dark:text-slate-300 overflow-hidden border p-4 w-full"
+        class="bg-gray-50 text-gray-800 dark:bg-slate-800 flex flex-col dark:text-slate-300 overflow-hidden border p-4 w-full"
         transition:slide
     >
         <div>
