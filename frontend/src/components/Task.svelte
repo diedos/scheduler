@@ -40,6 +40,7 @@
     <form method="POST" action="?/complete" use:enhance>
         <input type="hidden" name="id" value={id} />
         <button
+            on:click|stopPropagation
             type="submit"
             class="aspect-square h-auto w-auto rounded-md p-1 bg-emerald-600 text-gray-50"
         >
