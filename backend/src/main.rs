@@ -1,6 +1,6 @@
 use axum::extract::{Json, Path, State};
 use axum::routing::post;
-use axum::{http::StatusCode, routing::delete, routing::get, Router};
+use axum::{http::StatusCode, routing::get, Router};
 use serde::{Deserialize, Serialize, Serializer};
 use sqlx::postgres::PgPoolOptions;
 use sqlx::types::chrono::NaiveDateTime;
@@ -29,7 +29,7 @@ async fn main() -> Result<(), sqlx::Error> {
 
     let app = Router::new()
         .route("/", get(root))
-        .route("/tasks", get(all_tasks).post(create_task))
+        .route("/tasks", get(get_tasks).post(create_task))
         .route("/tasks/:id", get(get_task).delete(delete_task))
         .route("/tasks/:id/complete", post(complete_task))
         .with_state(db)
@@ -67,10 +67,55 @@ struct TodoTask {
     pub content: Option<String>,
 }
 
-async fn all_tasks(
+#[derive(Deserialize)]
+struct GetTasksPayload {
+    completed: Option<bool>,
+}
+
+async fn get_tasks(
+    State(db): State<PgPool>,
+    Json(payload): Json<GetTasksPayload>,
+) -> Result<(StatusCode, Json<Vec<TodoTask>>), (StatusCode, String)> {
+    if let Some(value) = &payload.completed {
+        match value {
+            true => return get_completed_tasks(State(db)).await,
+            false => return get_pending_tasks(State(db)).await,
+        }
+    } else {
+        return get_all_tasks(State(db)).await;
+    };
+}
+
+async fn get_all_tasks(
     State(db): State<PgPool>,
 ) -> Result<(StatusCode, Json<Vec<TodoTask>>), (StatusCode, String)> {
     let q = "SELECT * FROM tasks";
+    let query = sqlx::query_as::<_, TodoTask>(q);
+    let tasks = query.fetch_all(&db).await;
+
+    match tasks {
+        Ok(result) => Ok((StatusCode::OK, Json(result))),
+        Err(err) => Err((StatusCode::INTERNAL_SERVER_ERROR, err.to_string())),
+    }
+}
+
+async fn get_pending_tasks(
+    State(db): State<PgPool>,
+) -> Result<(StatusCode, Json<Vec<TodoTask>>), (StatusCode, String)> {
+    let q = "SELECT * FROM tasks WHERE completed_at IS NULL";
+    let query = sqlx::query_as::<_, TodoTask>(q);
+    let tasks = query.fetch_all(&db).await;
+
+    match tasks {
+        Ok(result) => Ok((StatusCode::OK, Json(result))),
+        Err(err) => Err((StatusCode::INTERNAL_SERVER_ERROR, err.to_string())),
+    }
+}
+
+async fn get_completed_tasks(
+    State(db): State<PgPool>,
+) -> Result<(StatusCode, Json<Vec<TodoTask>>), (StatusCode, String)> {
+    let q = "SELECT * FROM tasks WHERE completed_at IS NOT NULL";
     let query = sqlx::query_as::<_, TodoTask>(q);
     let tasks = query.fetch_all(&db).await;
 
