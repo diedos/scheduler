@@ -1,17 +1,15 @@
 <script lang="ts">
     import { enhance } from '$app/forms';
     import { slide } from 'svelte/transition';
+    import Box from './Box.svelte';
 
     export let show: boolean = false;
 </script>
 
 {#if show}
-    <section
-        class="bg-gray-50 text-gray-800 dark:bg-slate-800 flex flex-col dark:text-slate-300 overflow-hidden border p-4 w-full"
-        transition:slide
-    >
-        <div>
-            <form action="?/create" method="post" use:enhance class="flex flex-row space-x-4">
+    <Box>
+        <form action="?/create" method="post" use:enhance class="flex flex-col space-y-4 w-full">
+            <div class="flex flex-row w-full space-x-4">
                 <input
                     class="p-2 border rounded-md w-1/4"
                     placeholder="Task title"
@@ -24,10 +22,25 @@
                     type="text"
                     name="content"
                 />
-                <button class="bg-emerald-600 text-gray-50 px-4 rounded-md border" type="submit"
-                    >Create task</button
+            </div>
+            <div class="flex flex-row w-full space-x-4">
+                <input
+                    type="datetime-local"
+                    name="deadlineAt"
+                    class="p-2 border rounded-md w-1/4"
+                />
+                <input
+                    type="range"
+                    name="estimate"
+                    min="1"
+                    max="255"
+                    class="p-2 border rounded-md flex-1"
+                />
+                <button
+                    class="bg-emerald-600 text-gray-50 px-4 rounded-md border w-1/6"
+                    type="submit">Create task</button
                 >
-            </form>
-        </div>
-    </section>
+            </div>
+        </form>
+    </Box>
 {/if}

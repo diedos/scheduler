@@ -35,6 +35,10 @@
         <span class="text-sm">Created at<br />{data.createdAt}</span>
         <span class="text-sm">Updated at<br />{data.updatedAt}</span>
         <span class="text-sm">Completed at<br />{data.completedAt}</span>
+        <span class="text-sm">Deadline at<br />{data.deadlineAt}</span>
+        <span class="text-sm"
+            >Estimate<br />{data.estimate} {data.estimate === 1 ? 'hour' : 'hours'}</span
+        >
     </aside>
 </Box>
 

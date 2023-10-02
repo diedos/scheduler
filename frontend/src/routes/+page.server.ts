@@ -26,7 +26,7 @@ export const actions = {
                 title: data.get('title'),
                 content: data.get('content'),
                 deadlineAt: data.get('deadlineAt'),
-                estimate: data.get('estimate')
+                estimate: Number(data.get('estimate'))
             })
             .catch((err) => console.error(err));
     },
