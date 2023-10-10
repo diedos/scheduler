@@ -1,7 +1,4 @@
 <script lang="ts">
-    import Task from 'components/Task.svelte';
-    import Modal from 'components/Modal.svelte';
-    import AddTask from 'components/AddTask.svelte';
     import CurrentTask from 'components/CurrentTask.svelte';
 
     export let data;
@@ -20,4 +17,4 @@
 
 <!-- <svelte:window on:keydown={handleKeydown} /> -->
 
-<CurrentTask />
+<a class="absolute bottom-0 mb-4 self-center p-2" href="/tasks">Show all tasks</a>
