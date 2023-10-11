@@ -28,19 +28,19 @@
     <div
         class="bg-gray-50 text-gray-800 flex flex-row w-full overflow-hidden items-start px-6 py-6 rounded-md"
     >
-        <header class="justify-between items-start flex flex-row w-2/6">
+        <div class="justify-between items-start flex flex-row w-2/6">
             <h4 class="flex text-md">{title}</h4>
-        </header>
-        <section class="w-2/6 py-2 px-4 flex-1">
+        </div>
+        <div class="w-2/6 px-4 flex-1">
             {content}
-        </section>
-        <footer class="flex flex-1 flex-row justify-end items-center space-x-4">
+        </div>
+        <div class="flex flex-1 flex-row justify-end items-center space-x-4">
             {#if deadlineIn}
                 <span class="text-xs"
-                    >Deadline in {deadlineIn.toFixed()} {deadlineIn === 1 ? 'day' : 'days'}</span
-                >
+                    >Deadline in {deadlineIn.toFixed()} {deadlineIn === 1 ? 'day' : 'days'}
+                </span>
             {/if}
-        </footer>
+        </div>
         <form method="POST" action="?/complete" use:enhance>
             <input type="hidden" name="id" value={id} />
             <Button color="blue">

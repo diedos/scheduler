@@ -4,9 +4,16 @@
     export let banner = false;
 </script>
 
-<div class="transition-all duration-500 max-w-7xl" class:max-w-full={banner} class:w-full={banner}>
+<div
+    class="transition-all duration-500 max-w-7xl backdrop-blur-md mb-4"
+    class:max-w-full={banner}
+    class:w-full={banner}
+    class:sticky={banner}
+    class:top-0={banner}
+    class:shadow-md={banner}
+>
     <div
-        class="flex flex-col flex-grow lg:flex-row-reverse sm:m-4 justify-center transition-all duration-500"
+        class="flex flex-col flex-grow lg:flex-row-reverse justify-center transition-all duration-500"
         class:sm:mt-0={banner}
         class:sm:ml-0={banner}
         class:sm:mr-0={banner}
@@ -29,7 +36,7 @@
         {/if}
         <div
             class={banner
-                ? 'flex flex-col bg-gradient-to-tr from-sky-500 to-emerald-500 items-center justify-center max-lg:rounded-b-3xl p-4 max-lg:w-full lg:w-full transition-all duration-500'
+                ? 'flex flex-col bg-gradient-to-tr from-sky-translucent to-emerald-translucent items-center justify-center max-lg:rounded-b-3xl p-4 max-lg:w-full lg:w-full transition-all duration-500'
                 : 'flex flex-col bg-gradient-to-tr from-sky-500 to-emerald-500 items-center justify-center rounded-3xl p-4 max-lg:w-full lg:w-5/6 transition-all duration-500'}
         >
             <div class="w-full max-w-7xl">
