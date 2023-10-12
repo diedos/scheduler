@@ -11,15 +11,24 @@ export type TodoTask = {
     content: string;
 };
 
+const emptyTask = {
+    id: 0,
+    createdAt: '',
+    updatedAt: '',
+    completedAt: '',
+    deadlineAt: '',
+    title: 'No task selected',
+    content: ''
+};
+
 export const todoTasks: Writable<TodoTask[]> = writable([]);
 
-export const currentTask: Writable<TodoTask | undefined> = writable();
+export const currentTask: Writable<TodoTask | undefined> = writable(undefined);
 
 if (browser) {
     const storedTask = localStorage.getItem('currentTask');
 
-    currentTask.set(storedTask && storedTask.length > 0 ? JSON.parse(storedTask) : undefined);
-
+    currentTask.set(storedTask && storedTask.length > 0 ? JSON.parse(storedTask) : emptyTask);
     currentTask.subscribe((task) => {
         localStorage.setItem('currentTask', task ? JSON.stringify(task) : '');
     });

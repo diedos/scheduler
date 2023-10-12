@@ -8,7 +8,7 @@
     console.log(data);
 </script>
 
-<Box style="flex-row space-x-4">
+<Box>
     <div class="flex flex-col flex-1 space-y-4">
         <section class="flex flex-col space-y-4">
             <h2 class="text-2xl">{data.title}</h2>
@@ -40,9 +40,4 @@
             >Estimate<br />{data.estimate} {data.estimate === 1 ? 'hour' : 'hours'}</span
         >
     </aside>
-</Box>
-
-<Box style="flex-col space-y-4">
-    <h3 class="text-xl">Deadline</h3>
-    <p>Todo</p>
 </Box>

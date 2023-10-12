@@ -2,12 +2,12 @@
     export let color: 'blue' | 'green' | 'neutral' = 'neutral';
     export let square: boolean = false;
     export let disabled = false;
-    export let icon: HTMLElement | null = null; // TODO: use FontAwesome or similar
+    export let type: 'button' | 'submit' = 'submit';
 </script>
 
 <button
     on:click|stopPropagation
-    type="submit"
+    {type}
     class="transition-all h-auto w-auto rounded-md p-1 bg-emerald-600 text-gray-50 flex flex-row items-center space-x-1"
     class:bg-sky-500={color === 'blue'}
     class:hover:bg-sky-400={color === 'blue'}

@@ -20,14 +20,14 @@
 </script>
 
 <a href="/tasks/{task.id}" class:opacity-40={task.completedAt} in:fly={{ y: 20 }} out:slide>
-    <Box itemAlign="center">
+    <Box itemAlign="center" hoverable>
         <div class="justify-between items-start flex flex-row w-2/6">
             <h4 class="flex text-md">{task.title}</h4>
         </div>
         <div class="w-2/6 px-4 flex-1">
             {task.content}
         </div>
-        <div class="flex flex-1 flex-row justify-end items-center space-x-4">
+        <div class="flex flex-row justify-end items-center space-x-4">
             {#if deadlineIn}
                 <span class="text-xs"
                     >Deadline in {deadlineIn.toFixed()} {deadlineIn === 1 ? 'day' : 'days'}

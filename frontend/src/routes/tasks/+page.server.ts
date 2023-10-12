@@ -31,15 +31,21 @@ export const actions = {
             .catch((err) => console.error(err));
     },
     complete: async ({ request }) => {
-        const data = await request.formData();
-        axios
-            .post(`http://127.0.0.1:3000/tasks/${data.get('id')}/complete`)
-            .catch((err) => console.error(err));
+        const formData = await request.formData();
+        const { data } = await axios
+            .post(`http://127.0.0.1:3000/tasks/${formData.get('id')}/complete`)
+            .catch((err) => {
+                console.error(err);
+                return { data: { nextTask: undefined } };
+            });
+        return {
+            currentTask: data.nextTask
+        };
     },
     delete: async ({ request }) => {
         const data = await request.formData();
         axios
-            .delete('http://127.0.0.1:3000/tasks/' + data.get('id'))
+            .delete(`http://127.0.0.1:3000/tasks/${data.get('id')}`)
             .catch((err) => console.error(err));
     }
 };
