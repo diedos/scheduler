@@ -191,7 +191,7 @@ async fn create_task(
     }
 
     let deadline_at = if let Some(value) = &payload.deadline_at {
-        NaiveDateTime::parse_from_str(value, "%Y-%m-%d %H:%M:%S").ok()
+        NaiveDateTime::parse_from_str(value, "%Y-%m-%dT%H:%M").ok()
     } else {
         None
     };
