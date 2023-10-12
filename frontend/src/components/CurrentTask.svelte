@@ -1,6 +1,8 @@
 <script lang="ts">
     import { slide, scale } from 'svelte/transition';
 
+    import { currentTask } from '../store';
+
     export let banner = false;
 </script>
 
@@ -13,7 +15,7 @@
     class:shadow-md={banner}
 >
     <div
-        class="flex flex-col flex-grow lg:flex-row-reverse justify-center transition-all duration-500"
+        class="flex flex-col w-full lg:flex-row-reverse justify-center transition-all duration-500"
         class:sm:mt-0={banner}
         class:sm:ml-0={banner}
         class:sm:mr-0={banner}
@@ -36,7 +38,7 @@
         {/if}
         <div
             class={banner
-                ? 'flex flex-col bg-gradient-to-tr from-sky-translucent to-emerald-translucent items-center justify-center max-lg:rounded-b-3xl p-4 max-lg:w-full lg:w-full transition-all duration-500'
+                ? 'flex flex-col bg-gradient-to-tr from-sky-translucent to-emerald-translucent items-center justify-center p-4 max-lg:w-full lg:w-full transition-all duration-500'
                 : 'flex flex-col bg-gradient-to-tr from-sky-500 to-emerald-500 items-center justify-center rounded-3xl p-4 max-lg:w-full lg:w-5/6 transition-all duration-500'}
         >
             <div class="w-full max-w-7xl">
@@ -48,7 +50,7 @@
                     <h1
                         class="text-white text-3xl font-extrabold mb-1 [text-shadow:_2px_2px_0_rgb(0_0_0_/_20%)]"
                     >
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit
+                        {$currentTask?.title || ''}
                     </h1>
                     <h2
                         class="text-white text-3xl font-light mb-1 [text-shadow:_2px_2px_0_rgb(0_0_0_/_20%)]"
@@ -63,18 +65,7 @@
                     class="bg-white text-gray-800 text-lg rounded-2xl mt-3 max-sm:p-4 sm:p-6"
                     transition:slide
                 >
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum enim, ratione
-                    facere consectetur minus pariatur veniam nam! Repudiandae dolorum obcaecati
-                    alias neque iure porro sed at veritatis itaque! Corporis, sequi.<br /><br />
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quidem dicta laborum dolorem
-                    minus fugit id repellat voluptatibus eum. Necessitatibus, enim quaerat esse consectetur
-                    nihil aliquid quo, ipsa harum expedita consequatur facere officiis rerum iste, suscipit
-                    sed? Aspernatur porro fuga maxime unde deserunt illo qui, architecto similique blanditiis
-                    modi ea quae perferendis, consectetur, laudantium debitis nobis eligendi ipsa culpa
-                    enim sed aut quam dolor! Harum odio officia itaque fuga esse iste deleniti ratione
-                    ducimus laboriosam tempora voluptas, temporibus deserunt aspernatur assumenda, veniam
-                    non labore fugit omnis recusandae. Iste nam deserunt illum porro neque reprehenderit,
-                    quae repudiandae facilis suscipit nihil, laborum quasi.
+                    {$currentTask?.content || ''}
                 </div>
             {/if}
         </div>

@@ -9,16 +9,9 @@
     let showAddTask = true;
 </script>
 
-<div class="flex flex-col max-w-7xl w-full space-y-2">
+<div class="flex flex-col max-w-7xl w-full space-y-2 mb-16 sm:px-4">
     <AddTask show />
     {#each data.todoTasks as task (task.id)}
-        <Task
-            id={task.id}
-            title={task.title}
-            content={task.content || ''}
-            createdAt={task.createdAt}
-            completedAt={task.completedAt}
-            deadlineAt={task.deadlineAt}
-        />
+        <Task {task} />
     {/each}
 </div>
