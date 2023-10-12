@@ -9,7 +9,6 @@ export type TodoTask = {
     deadlineAt: string;
     title: string;
     content: string;
-    completed: boolean;
 };
 
 export const todoTasks: Writable<TodoTask[]> = writable([]);
