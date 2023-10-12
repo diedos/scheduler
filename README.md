@@ -22,6 +22,7 @@ Pretty much everything it currently does could be achieved purely in the Svelte 
 - OAuth login (Google?)
 - repeating tasks
 - hotkeys and attention to accessibility
+- API documentation (Swagger or similar)
 - explore View Transitions API
 - explore gRPC
 
