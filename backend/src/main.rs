@@ -186,6 +186,10 @@ async fn create_task(
     State(db): State<PgPool>,
     Json(payload): Json<CreateTaskPayload>,
 ) -> Result<(StatusCode, Json<TodoTask>), (StatusCode, String)> {
+    if payload.title.is_empty() {
+        return Err((StatusCode::BAD_REQUEST, "Title is required".to_string()));
+    }
+
     let deadline_at = if let Some(value) = &payload.deadline_at {
         NaiveDateTime::parse_from_str(value, "%Y-%m-%d %H:%M:%S").ok()
     } else {

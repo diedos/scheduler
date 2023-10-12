@@ -2,6 +2,7 @@
     import { enhance } from '$app/forms';
     import { slide } from 'svelte/transition';
     import Box from './Box.svelte';
+    import Button from './Button.svelte';
 
     export let show: boolean = false;
 </script>
@@ -15,6 +16,7 @@
                     placeholder="Task title"
                     type="text"
                     name="title"
+                    required
                 />
                 <input
                     class="p-2 border rounded-md flex-1"
@@ -36,10 +38,7 @@
                     max="255"
                     class="p-2 border rounded-md flex-1"
                 />
-                <button
-                    class="bg-emerald-600 text-gray-50 px-4 rounded-md border w-1/6"
-                    type="submit">Create task</button
-                >
+                <Button color="blue">Create task</Button>
             </div>
         </form>
     </Box>
