@@ -17,7 +17,7 @@
     }
 </script>
 
-<a href="/tasks/{task.id}" class:opacity-40={task.completedAt} in:fly={{ y: 20 }} out:slide>
+<a href="#" class:opacity-40={task.completedAt} in:fly={{ y: 20 }} out:slide>
     <Box itemAlign="center" hoverable>
         <div class="justify-between items-start flex flex-row w-2/6">
             <h4 class="flex text-md">{task.title}</h4>
