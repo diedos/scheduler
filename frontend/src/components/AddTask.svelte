@@ -1,5 +1,6 @@
 <script lang="ts">
     import { enhance } from '$app/forms';
+    import { currentTask } from '../store';
     import Box from './Box.svelte';
     import Button from './Button.svelte';
 
@@ -8,7 +9,17 @@
 
 {#if show}
     <Box>
-        <form action="?/create" method="post" use:enhance class="flex flex-col space-y-4 w-full">
+        <form
+            action="?/create"
+            method="post"
+            class="flex flex-col space-y-4 w-full"
+            use:enhance={({ formElement, formData, action, cancel, submitter }) => {
+                return async ({ result, update }) => {
+                    if (!$currentTask?.id) currentTask.set(result.data.createdTask);
+                    update();
+                };
+            }}
+        >
             <div class="flex flex-row w-full space-x-4">
                 <input
                     class="p-2 border rounded-md w-1/3"
