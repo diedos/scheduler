@@ -52,7 +52,7 @@
                             <h1
                                 class="text-white text-3xl font-extrabold mb-1 [text-shadow:_2px_2px_0_rgb(0_0_0_/_20%)]"
                             >
-                                {$currentTask?.title || ''}
+                                {$currentTask?.id ? $currentTask.title : 'All tasks done for now!'}
                             </h1>
                             <h2
                                 class="text-white text-3xl font-light mb-1 [text-shadow:_2px_2px_0_rgb(0_0_0_/_20%)]"
@@ -78,7 +78,7 @@
                         <h1
                             class="text-white text-3xl font-extrabold mb-1 [text-shadow:_2px_2px_0_rgb(0_0_0_/_20%)]"
                         >
-                            {$currentTask?.title || ''}
+                            {$currentTask?.id ? $currentTask.title : 'All tasks done for now!'}
                         </h1>
                         <h2
                             class="text-white text-3xl font-light mb-1 [text-shadow:_2px_2px_0_rgb(0_0_0_/_20%)]"

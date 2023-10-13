@@ -14,8 +14,6 @@
         let deadlineDate = new Date(task.deadlineAt);
         let nowDate = new Date();
         deadlineIn = (deadlineDate.getTime() - nowDate.getTime()) / (1000 * 3600 * 24);
-
-        console.log(deadlineIn);
     }
 </script>
 
@@ -45,7 +43,16 @@
                     </Button>
                 </form>
             {/if}
-            <form method="POST" action="?/complete" use:enhance>
+            <form
+                method="POST"
+                action="?/complete"
+                use:enhance={({ formElement, formData, action, cancel, submitter }) => {
+                    return async ({ result, update }) => {
+                        if ($currentTask?.id === task.id) currentTask.set(result.data.nextTask);
+                        update();
+                    };
+                }}
+            >
                 <input type="hidden" name="id" value={task.id} />
                 <Button color="blue">
                     <span class="flex">Done</span>

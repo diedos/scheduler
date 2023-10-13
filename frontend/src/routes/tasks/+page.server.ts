@@ -39,7 +39,7 @@ export const actions = {
                 return { data: { nextTask: undefined } };
             });
         return {
-            currentTask: data.nextTask
+            nextTask: data
         };
     },
     delete: async ({ request }) => {

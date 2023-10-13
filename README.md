@@ -15,7 +15,7 @@ Pretty much everything it currently does could be achieved purely in the Svelte 
 
 - automatic task prioritization based on deadlines, estimated workloads and other criteria such as context tags
 - context tags to group related tasks together
-- pomodoro
+- pomodoro with automatic breaks
 - dark mode
 - tests
 - cloud deployment via Github Actions and Terraform
