@@ -12,7 +12,7 @@
 </script>
 
 <div class="flex flex-row justify-center w-full min-h-screen">
-    <div class="flex flex-col min-h-full w-full items-center">
+    <div class="flex flex-col min-h-screen w-full items-center">
         <CurrentTask {banner} />
         <slot />
     </div>

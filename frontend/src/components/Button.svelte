@@ -3,6 +3,8 @@
     export let square: boolean = false;
     export let disabled = false;
     export let type: 'button' | 'submit' = 'submit';
+    export let wide: boolean = false;
+    export let large: boolean = false;
 </script>
 
 <button
@@ -22,6 +24,7 @@
     class:hover:bg-gray-100={disabled}
     class:text-gray-400={disabled}
     class:italic={disabled}
+    class:py-4={large}
     {disabled}
 >
     <slot />

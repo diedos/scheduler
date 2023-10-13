@@ -1,18 +1,17 @@
 <script lang="ts">
     import { slide, scale } from 'svelte/transition';
+    import { enhance } from '$app/forms';
 
     import { currentTask } from '../store';
+    import Button from './Button.svelte';
 
     export let banner = false;
 </script>
 
 <div
-    class="transition-all duration-500 max-w-7xl backdrop-blur-md mb-4 w-full mt-96"
-    class:max-w-full={banner}
-    class:sticky={banner}
-    class:top-0={banner}
-    class:shadow-md={banner}
-    class:mt-0={banner}
+    class={banner
+        ? 'transition-all duration-500 mb-4 w-full max-w-full sticky top-0 shadow-md mt-0 backdrop-blur-md translate-y-0 z-10'
+        : 'transition-all duration-500 max-w-7xl mb-4 w-full absolute top-1/2 -translate-y-1/2'}
 >
     <div
         class="flex flex-col w-full lg:flex-row-reverse justify-center transition-all duration-500"
@@ -24,16 +23,34 @@
             <div
                 class="flex max-lg:flex-row lg:flex-col max-lg:space-x-4 lg:space-y-4 lg:ml-4 max-lg:mb-4 max-sm:mb-2 grow lg:w-1/6 overflow-hidden"
             >
-                <div
-                    class="text-neutral-500 backdrop-blur-sm bg-neutral-300 bg-opacity-10 rounded-xl max-sm:p-2 sm:p-4 border-2 border-neutral-200 max-lg:w-1/2 lg:w-full"
+                <Button color="neutral" disabled wide large>Take a break</Button>
+                <form
+                    method="POST"
+                    action="?/complete"
+                    use:enhance={({ formElement, formData, action, cancel, submitter }) => {
+                        return async ({ result, update }) => {
+                            currentTask.set(result.data.nextTask);
+                            update();
+                        };
+                    }}
                 >
-                    Take a break
-                </div>
-                <div
-                    class="text-neutral-500 backdrop-blur-sm bg-emerald-500 bg-opacity-20 rounded-xl max-sm:p-2 sm:p-4 border-2 border-neutral-300 max-lg:w-1/2 lg:w-full"
-                >
-                    Done!
-                </div>
+                    <input type="hidden" name="id" value={$currentTask?.id} />
+                    <Button color="blue" disabled={!$currentTask?.id} wide large>
+                        <span class="flex">Done</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            class="w-5 h-5 flex"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                clip-rule="evenodd"
+                            />
+                        </svg>
+                    </Button>
+                </form>
             </div>
         {/if}
         {#if banner}
@@ -57,7 +74,7 @@
                             <h2
                                 class="text-white text-3xl font-light mb-1 [text-shadow:_2px_2px_0_rgb(0_0_0_/_20%)]"
                             >
-                                12:34
+                                {$currentTask?.id ? '12:34' : ''}
                             </h2>
                         </div>
                     </div>
@@ -83,7 +100,7 @@
                         <h2
                             class="text-white text-3xl font-light mb-1 [text-shadow:_2px_2px_0_rgb(0_0_0_/_20%)]"
                         >
-                            12:34
+                            {$currentTask?.id ? '12:34' : ''}
                         </h2>
                     </div>
                 </div>
