@@ -10,18 +10,19 @@
 
 <div
     class={banner
-        ? 'transition-all duration-500 mb-4 w-full max-w-full sticky top-0 shadow-md mt-0 backdrop-blur-md translate-y-0 z-10'
-        : 'transition-all duration-500 max-w-7xl mb-4 w-full absolute top-1/2 -translate-y-1/2'}
+        ? 'transition-all duration-500 lg:mb-4 w-full max-w-full sticky top-0 mt-0 backdrop-blur-md translate-y-0 z-10'
+        : 'transition-all duration-500 max-w-7xl w-full lg:absolute lg:top-1/2 lg:-translate-y-1/2'}
 >
     <div
-        class="flex flex-col w-full lg:flex-row-reverse justify-center transition-all duration-500"
+        class="flex flex-col w-full max-lg:flex-col-reverse lg:flex-row-reverse justify-center transition-all duration-500"
         class:sm:mt-0={banner}
         class:sm:ml-0={banner}
         class:sm:mr-0={banner}
+        class:max-lg:p-4={!banner}
     >
         {#if !banner}
             <div
-                class="flex max-lg:flex-row lg:flex-col max-lg:space-x-4 lg:space-y-4 lg:ml-4 max-lg:mb-4 max-sm:mb-2 grow lg:w-1/6 overflow-hidden"
+                class="flex max-lg:flex-row lg:flex-col max-lg:m-4 max-lg:space-x-4 lg:space-y-4 lg:ml-4 max-lg:mb-4 max-sm:mb-2 grow lg:w-1/6 overflow-hidden"
             >
                 <Button color="neutral" disabled wide large>Take a break</Button>
                 <form

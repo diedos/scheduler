@@ -7,8 +7,8 @@ export default {
                 pattern: "url('/bg.svg')"
             },
             colors: {
-                'sky-translucent': 'rgba(14, 165, 233, 0.92)',
-                'emerald-translucent': 'rgba(16, 185, 129, 0.92)'
+                'sky-translucent': 'rgba(14, 165, 233, 0.9)',
+                'emerald-translucent': 'rgba(16, 185, 129, 0.9)'
             }
         }
     },

@@ -19,20 +19,21 @@
 
 <a href="#" class:opacity-40={task.completedAt} in:fly={{ y: 20 }} out:slide>
     <Box itemAlign="center" hoverable>
-        <div class="justify-between items-start flex flex-row w-2/6">
-            <h4 class="flex text-md">{task.title}</h4>
+        <div class="lg:justify-between items-start flex flex-row lg:w-2/6">
+            <h4 class="flex text-md font-semibold">{task.title}</h4>
         </div>
-        <div class="w-2/6 px-4 flex-1">
+        <div class="lg:w-2/6 lg:px-4 max-lg:mt-1 flex-1">
             {task.content}
         </div>
-        <div class="flex flex-row justify-end items-center space-x-4">
+        <div class="flex flex-row justify-end items-center space-x-4 max-lg:mb-2 max-lg:mt-2">
             {#if deadlineIn}
                 <span class="text-xs"
-                    >Deadline in {deadlineIn.toFixed()} {deadlineIn === 1 ? 'day' : 'days'}
+                    >Deadline in {deadlineIn.toFixed()}
+                    {deadlineIn.toFixed() === '1' ? 'day' : 'days'}
                 </span>
             {/if}
         </div>
-        <div class="flex flex-row ml-4 space-x-4">
+        <div class="flex flex-row lg:ml-4 space-x-4 max-lg:justify-end">
             {#if $currentTask?.id === task.id}
                 <Button color="neutral" disabled>In progress...</Button>
             {:else}

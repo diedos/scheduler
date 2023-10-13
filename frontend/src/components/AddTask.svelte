@@ -20,9 +20,9 @@
                 };
             }}
         >
-            <div class="flex flex-row w-full space-x-4">
+            <div class="flex lg:flex-row max-lg:flex-col w-full lg:space-x-4 max-lg:space-y-4">
                 <input
-                    class="p-2 border rounded-md w-1/3"
+                    class="p-2 border rounded-md lg:w-1/3"
                     placeholder="Task title"
                     type="text"
                     name="title"
@@ -35,18 +35,20 @@
                     name="content"
                 />
             </div>
-            <div class="flex flex-row w-full space-x-4">
-                <div class="flex flex-row space-x-2 items-center w-1/3">
-                    <span class="flex">Deadline at</span>
+            <div class="flex lg:flex-row max-lg:flex-col w-full lg:space-x-4 max-lg:space-y-4">
+                <div class="flex flex-row max-lg:space-y-2 space-x-2 items-center lg:w-1/3">
+                    <span class="flex">Deadline&nbsp;at</span>
                     <input
                         type="datetime-local"
                         name="deadlineAt"
                         class="p-2 border rounded-md flex-grow"
                     />
                 </div>
-                <div class="flex flex-row w-1/3">
+                <div
+                    class="flex lg:flex-row max-lg:flex-col max-lg:space-y-2 lg:space-x-2 lg:items-center lg:w-1/3"
+                >
                     <div class="flex flex-row space-x-2 items-center">
-                        <span class="flex">Time to complete</span>
+                        <span class="flex">Time&nbsp;to&nbsp;complete</span>
                         <select name="estimate" class="p-2 border rounded-md">
                             <option value="0">Unestimated</option>
                             <option value="1">1 hour</option>
@@ -57,8 +59,8 @@
                     </div>
                 </div>
 
-                <div class="flex flex-row justify-end flex-1">
-                    <Button color="blue">Create task</Button>
+                <div class="flex flex-row lg:justify-end max-lg:justify-center flex-1">
+                    <Button color="blue" large>Create task</Button>
                 </div>
             </div>
         </form>
