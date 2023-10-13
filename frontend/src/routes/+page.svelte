@@ -1,5 +1,5 @@
 <script lang="ts">
-    import CurrentTask from 'components/CurrentTask.svelte';
+    import { currentTask } from '../store.js';
 
     export let data;
 
@@ -14,6 +14,10 @@
     //     }
     // }
 </script>
+
+<svelte:head>
+    <title>{$currentTask?.id ? $currentTask?.title : 'Not working on any task'}</title>
+</svelte:head>
 
 <!-- <svelte:window on:keydown={handleKeydown} /> -->
 

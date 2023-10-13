@@ -11,6 +11,10 @@
     let showAddTask = true;
 </script>
 
+<svelte:head>
+    <title>All tasks</title>
+</svelte:head>
+
 <div class="flex flex-col max-w-7xl w-full space-y-2 mb-16 sm:px-4" in:fade>
     <AddTask show />
     {#each data.todoTasks as task (task.id)}
