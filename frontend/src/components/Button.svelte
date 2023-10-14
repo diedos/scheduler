@@ -1,9 +1,8 @@
 <script lang="ts">
     export let color: 'blue' | 'green' | 'neutral' = 'neutral';
     export let square: boolean = false;
-    export let disabled = false;
+    export let disabled: boolean = false;
     export let type: 'button' | 'submit' = 'submit';
-    export let wide: boolean = false;
     export let large: boolean = false;
 </script>
 

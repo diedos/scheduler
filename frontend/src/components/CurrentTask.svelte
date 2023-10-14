@@ -10,7 +10,7 @@
 
 <div
     class={banner
-        ? 'transition-all duration-500 lg:mb-4 w-full max-w-full sticky top-0 mt-0 backdrop-blur-md translate-y-0 z-10'
+        ? 'transition-all duration-500 lg:mb-4 w-full max-w-full sticky top-0 mt-0 translate-y-0 z-10'
         : 'transition-all duration-500 max-w-7xl w-full lg:absolute lg:top-1/2 lg:-translate-y-1/2'}
 >
     <div
@@ -24,7 +24,7 @@
             <div
                 class="flex max-lg:flex-row lg:flex-col max-lg:m-4 max-lg:space-x-4 lg:space-y-4 lg:ml-4 max-lg:mb-4 max-sm:mb-2 grow lg:w-1/6 overflow-hidden"
             >
-                <Button color="neutral" disabled wide large>Take a break</Button>
+                <Button color="neutral" disabled large>Take a break</Button>
                 <form
                     method="POST"
                     action="?/complete"
@@ -36,7 +36,7 @@
                     }}
                 >
                     <input type="hidden" name="id" value={$currentTask?.id} />
-                    <Button color="blue" disabled={!$currentTask?.id} wide large>
+                    <Button color="blue" disabled={!$currentTask?.id} large>
                         <span class="flex">Done</span>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@
             <a href="/" class="w-full h-full flex items-center justify-center">
                 <div
                     class={banner
-                        ? 'flex flex-col bg-gradient-to-tr from-sky-translucent to-emerald-translucent items-center justify-center p-4 max-lg:w-full lg:w-full transition-all duration-500'
+                        ? 'flex flex-col bg-gradient-to-tr from-sky-500 to-emerald-500 items-center justify-center p-4 max-lg:w-full lg:w-full transition-all duration-500'
                         : 'flex flex-col bg-gradient-to-tr from-sky-500 to-emerald-500 items-center justify-center rounded-3xl p-4 max-lg:w-full lg:w-5/6 transition-all duration-500'}
                 >
                     <div class="w-full max-w-7xl">
@@ -84,7 +84,7 @@
         {:else}
             <div
                 class={banner
-                    ? 'flex flex-col bg-gradient-to-tr from-sky-translucent to-emerald-translucent items-center justify-center p-4 max-lg:w-full lg:w-full transition-all duration-500'
+                    ? 'flex flex-col bg-gradient-to-tr from-sky-500 to-emerald-500 items-center justify-center p-4 max-lg:w-full lg:w-full transition-all duration-500'
                     : 'flex flex-col bg-gradient-to-tr from-sky-500 to-emerald-500 items-center justify-center rounded-3xl p-4 max-lg:w-full lg:w-5/6 transition-all duration-500'}
             >
                 <div class="w-full max-w-7xl">

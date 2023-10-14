@@ -17,7 +17,7 @@
     }
 </script>
 
-<a href="#" class:opacity-40={task.completedAt} in:fly={{ y: 20 }} out:slide>
+<div class:opacity-40={task.completedAt} in:fly={{ y: 20 }} out:slide>
     <Box itemAlign="center" hoverable>
         <div class="lg:justify-between items-start flex flex-row lg:w-2/6">
             <h4 class="flex text-md font-semibold">{task.title}</h4>
@@ -73,4 +73,4 @@
             </form>
         </div>
     </Box>
-</a>
+</div>
