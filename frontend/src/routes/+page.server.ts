@@ -1,8 +1,9 @@
+import { API_URL } from '$env/static/private';
 import axios from 'axios';
 
 export async function load() {
     const { data } = await axios
-        .get('http://127.0.0.1:3000/tasks', {
+        .get(`${API_URL}/tasks`, {
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -22,7 +23,7 @@ export const actions = {
     create: async ({ request }) => {
         const data = await request.formData();
         axios
-            .post('http://127.0.0.1:3000/tasks', {
+            .post(`${API_URL}/tasks`, {
                 title: data.get('title'),
                 content: data.get('content'),
                 deadlineAt: data.get('deadlineAt'),
@@ -33,7 +34,7 @@ export const actions = {
     complete: async ({ request }) => {
         const formData = await request.formData();
         const { data } = await axios
-            .post(`http://127.0.0.1:3000/tasks/${formData.get('id')}/complete`)
+            .post(`${API_URL}/tasks/${formData.get('id')}/complete`)
             .catch((err) => {
                 console.error(err);
                 return { data: { nextTask: undefined } };
@@ -44,8 +45,6 @@ export const actions = {
     },
     delete: async ({ request }) => {
         const data = await request.formData();
-        axios
-            .delete('http://127.0.0.1:3000/tasks/' + data.get('id'))
-            .catch((err) => console.error(err));
+        axios.delete(`${API_URL}/tasks/` + data.get('id')).catch((err) => console.error(err));
     }
 };
