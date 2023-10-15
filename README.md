@@ -34,8 +34,4 @@ Pretty much everything it currently does could be achieved purely in the Svelte 
 
 ## Development
 
-Rust backend can be started with `cargo watch -x run`. It will run on port 3000.
-
-Frontend uses pnpm as the package manager. Svelte frontend can be started with `pnpm run dev`. It will run on port 5173.
-
-TODO: Set up Docker containers for backend and frontend
+Run `docker compose up -d` and you should be good to go. Frontend will be served at `localhost:5173`, backend at `localhost:3000`.
