@@ -13,14 +13,17 @@ use tower_http::cors::CorsLayer;
 
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {
-    dotenv::dotenv().expect("Failed to read .env file");
-
-    let database_url =
-        env::var("DATABASE_URL").expect("DATABASE_URL environment variable should be set");
+    let db_host = env::var("PG_HOST").expect("PG_HOST environment variable should be set");
+    let db_name = env::var("PG_DBNAME").expect("PG_DBNAME environment variable should be set");
+    let db_user = env::var("PG_USER").expect("PG_USER environment variable should be set");
+    let db_pass = env::var("PG_PASSWORD").expect("PG_PASSWORD environment variable should be set");
 
     let db = PgPoolOptions::new()
         .max_connections(10)
-        .connect(&database_url)
+        .connect(&format!(
+            "postgres://{}:{}@{}/{}",
+            db_user, db_pass, db_host, db_name
+        ))
         .await
         .expect("Database connection failed");
 
