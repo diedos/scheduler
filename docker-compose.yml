@@ -4,10 +4,46 @@ services:
     image: postgres:15-alpine
     restart: unless-stopped
     environment:
-      - POSTGRES_PASSWORD
-    ports:
-      - 5432:5432
+      - POSTGRES_PASSWORD=postgres
     volumes:
       - psql-data:/var/lib/postgresql/data
+    networks:
+      - server
+  backend:
+    build:
+      context: backend
+      target: development
+    restart: unless-stopped
+    environment:
+      - PG_DBNAME=todo-rs-svelte
+      - PG_HOST=db
+      - PG_USER=postgres
+      - PG_PASSWORD=postgres
+    volumes:
+      - ./backend/src:/opt/src
+      - backend-cache:/opt/target
+    depends_on:
+      - db
+    ports:
+      - 3000:3000
+    networks:
+      - server
+      - client
+  frontend:
+    build:
+      context: frontend
+      target: development
+    restart: unless-stopped
+    ports:
+      - 5173:5173
+    volumes:
+      - ./frontend/src:/opt/src
+      - ./frontend/static:/opt/static
+    networks:
+      - client
 volumes:
   psql-data:
+  backend-cache:
+networks:
+  server:
+  client:
