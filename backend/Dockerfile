@@ -4,11 +4,12 @@ WORKDIR /opt
 RUN cargo init
 COPY Cargo.toml Cargo.lock ./
 RUN cargo fetch
-RUN cargo install cargo-watch
 COPY src/ ./src/
+COPY migrations/ ./migrations/
 
 FROM base AS development
 
+RUN cargo install cargo-watch
 EXPOSE 3000
 CMD [ "cargo", "watch", "-x", "run" ]
 

@@ -1,9 +1,9 @@
-import { API_URL } from '$env/static/private';
+import { PUBLIC_API_URL } from '$env/static/public';
 import axios from 'axios';
 
 export async function load() {
     const { data } = await axios
-        .get(`${API_URL}/tasks`, {
+        .get(`${PUBLIC_API_URL}/tasks`, {
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -23,7 +23,7 @@ export const actions = {
     create: async ({ request }) => {
         const data = await request.formData();
         axios
-            .post(`${API_URL}/tasks`, {
+            .post(`${PUBLIC_API_URL}/tasks`, {
                 title: data.get('title'),
                 content: data.get('content'),
                 deadlineAt: data.get('deadlineAt'),
@@ -34,7 +34,7 @@ export const actions = {
     complete: async ({ request }) => {
         const formData = await request.formData();
         const { data } = await axios
-            .post(`${API_URL}/tasks/${formData.get('id')}/complete`)
+            .post(`${PUBLIC_API_URL}/tasks/${formData.get('id')}/complete`)
             .catch((err) => {
                 console.error(err);
                 return { data: { nextTask: undefined } };
@@ -45,6 +45,8 @@ export const actions = {
     },
     delete: async ({ request }) => {
         const data = await request.formData();
-        axios.delete(`${API_URL}/tasks/` + data.get('id')).catch((err) => console.error(err));
+        axios
+            .delete(`${PUBLIC_API_URL}/tasks/` + data.get('id'))
+            .catch((err) => console.error(err));
     }
 };

@@ -9,7 +9,7 @@ use sqlx::types::chrono::NaiveDateTime;
 use sqlx::{FromRow, PgPool};
 use std::env;
 use std::net::SocketAddr;
-use tower_http::cors::CorsLayer;
+use tower_http::cors::{Any, CorsLayer};
 
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {
@@ -29,8 +29,8 @@ async fn main() -> Result<(), sqlx::Error> {
 
     sqlx::migrate!().run(&db).await?;
 
-    let origins = ["http://localhost:5173".parse().unwrap()];
-    let cors = CorsLayer::new().allow_origin(origins);
+    //let origins = ["http://localhost:5173".parse().unwrap()];
+    let cors = CorsLayer::new().allow_origin(Any);
 
     let app = Router::new()
         .route("/", get(root))
@@ -40,7 +40,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .with_state(db)
         .layer(cors);
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
     println!("listening on {}", addr);
 
     axum::Server::bind(&addr)
