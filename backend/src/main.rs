@@ -1,10 +1,10 @@
 use axum::routing::post;
 use axum::{routing::get, Router};
 use sqlx::postgres::PgPoolOptions;
-use std::env;
 use std::net::SocketAddr;
 use tower_http::cors::{Any, CorsLayer};
 
+mod config;
 mod controllers;
 mod models;
 mod utils;
@@ -13,16 +13,12 @@ use crate::controllers::tasks::*;
 
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {
-    let db_host = env::var("PG_HOST").expect("PG_HOST environment variable should be set");
-    let db_name = env::var("PG_DBNAME").expect("PG_DBNAME environment variable should be set");
-    let db_user = env::var("PG_USER").expect("PG_USER environment variable should be set");
-    let db_pass = env::var("PG_PASSWORD").expect("PG_PASSWORD environment variable should be set");
-
+    let config = config::Config::init();
     let db = PgPoolOptions::new()
         .max_connections(10)
         .connect(&format!(
             "postgres://{}:{}@{}/{}",
-            db_user, db_pass, db_host, db_name
+            config.db_user, config.db_pass, config.db_host, config.db_name
         ))
         .await
         .expect("Database connection failed");
