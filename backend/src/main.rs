@@ -1,38 +1,41 @@
-use axum::routing::post;
-use axum::{routing::get, Router};
+use axum::Router;
 use sqlx::postgres::PgPoolOptions;
 use std::net::SocketAddr;
+use std::sync::Arc;
 use tower_http::cors::{Any, CorsLayer};
 
 mod config;
 mod controllers;
 mod models;
+mod routes;
 mod utils;
 
-use crate::controllers::tasks::*;
+use crate::routes::root::root_router;
+
+lazy_static::lazy_static! {
+    pub static ref CONFIG: config::Config = config::Config::init();
+}
 
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {
-    let config = config::Config::init();
-    let db = PgPoolOptions::new()
+    let db_pool = PgPoolOptions::new()
         .max_connections(10)
         .connect(&format!(
             "postgres://{}:{}@{}/{}",
-            config.db_user, config.db_pass, config.db_host, config.db_name
+            &CONFIG.db_user, &CONFIG.db_pass, &CONFIG.db_host, &CONFIG.db_name
         ))
         .await
         .expect("Database connection failed");
 
-    sqlx::migrate!().run(&db).await?;
+    sqlx::migrate!().run(&db_pool).await?;
+
+    let db = Arc::new(db_pool);
 
     //let origins = ["http://localhost:5173".parse().unwrap()];
     let cors = CorsLayer::new().allow_origin(Any);
 
     let app = Router::new()
-        .route("/", get(root))
-        .route("/tasks", get(get_tasks).post(create_task))
-        .route("/tasks/:id", get(get_task).delete(delete_task))
-        .route("/tasks/:id/complete", post(complete_task))
+        .merge(root_router())
         .with_state(db)
         .layer(cors);
 
@@ -45,8 +48,4 @@ async fn main() -> Result<(), sqlx::Error> {
         .unwrap();
 
     Ok(())
-}
-
-async fn root() -> &'static str {
-    "Hello, World!"
 }

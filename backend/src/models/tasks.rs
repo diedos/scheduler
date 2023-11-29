@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use crate::utils::serializers::serialize_dt;
 use axum::extract::State;
 use axum::http::StatusCode;
@@ -29,11 +31,11 @@ pub struct GetTasksPayload {
 }
 
 pub async fn get_all_tasks(
-    State(db): State<PgPool>,
+    State(db): State<Arc<PgPool>>,
 ) -> Result<(StatusCode, Json<Vec<TodoTask>>), (StatusCode, String)> {
     let q = "SELECT * FROM tasks";
     let query = sqlx::query_as::<_, TodoTask>(q);
-    let tasks = query.fetch_all(&db).await;
+    let tasks = query.fetch_all(&*db).await;
 
     match tasks {
         Ok(result) => Ok((StatusCode::OK, Json(result))),
@@ -42,11 +44,11 @@ pub async fn get_all_tasks(
 }
 
 pub async fn get_pending_tasks(
-    State(db): State<PgPool>,
+    State(db): State<Arc<PgPool>>,
 ) -> Result<(StatusCode, Json<Vec<TodoTask>>), (StatusCode, String)> {
     let q = "SELECT * FROM tasks WHERE completed_at IS NULL";
     let query = sqlx::query_as::<_, TodoTask>(q);
-    let tasks = query.fetch_all(&db).await;
+    let tasks = query.fetch_all(&*db).await;
 
     match tasks {
         Ok(result) => Ok((StatusCode::OK, Json(result))),
@@ -55,11 +57,11 @@ pub async fn get_pending_tasks(
 }
 
 pub async fn get_completed_tasks(
-    State(db): State<PgPool>,
+    State(db): State<Arc<PgPool>>,
 ) -> Result<(StatusCode, Json<Vec<TodoTask>>), (StatusCode, String)> {
     let q = "SELECT * FROM tasks WHERE completed_at IS NOT NULL";
     let query = sqlx::query_as::<_, TodoTask>(q);
-    let tasks = query.fetch_all(&db).await;
+    let tasks = query.fetch_all(&*db).await;
 
     match tasks {
         Ok(result) => Ok((StatusCode::OK, Json(result))),

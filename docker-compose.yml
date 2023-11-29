@@ -16,11 +16,8 @@ services:
       context: backend
       target: development
     restart: unless-stopped
-    environment:
-      - PG_DBNAME=scheduler
-      - PG_HOST=db
-      - PG_USER=postgres
-      - PG_PASSWORD=postgres
+    env_file:
+      - ./backend/.env
     volumes:
       - ./backend/src:/opt/src
       - backend-cache:/opt/target
