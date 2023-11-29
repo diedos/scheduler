@@ -3,8 +3,8 @@ use std::sync::Arc;
 use axum::{routing::get, Router};
 use sqlx::PgPool;
 
-use crate::controllers::auth::login_google_oauth;
+use crate::controllers::auth::*;
 
 pub fn auth_router() -> Router<Arc<PgPool>> {
-    Router::new().route("/google", get(login_google_oauth))
+    Router::new().route("/google", get(google_api_authorization))
 }

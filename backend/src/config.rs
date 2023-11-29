@@ -1,7 +1,8 @@
 use dotenv;
 use std::env;
 pub struct Config {
-    pub root_url: String,
+    pub client_root_url: String,
+    pub api_root_url: String,
     pub db_host: String,
     pub db_name: String,
     pub db_user: String,
@@ -14,7 +15,10 @@ impl Config {
     pub fn init() -> Config {
         dotenv::dotenv().ok();
         // General
-        let root_url = env::var("ROOT_URL").expect("ROOT_URL environment variable must be set");
+        let client_root_url =
+            env::var("CLIENT_ROOT_URL").expect("CLIENT_ROOT_URL environment variable must be set");
+        let api_root_url =
+            env::var("API_ROOT_URL").expect("API_ROOT_URL environment variable must be set");
 
         // Database
         let db_host = env::var("PG_HOST").expect("PG_HOST environment variable must be set");
@@ -30,7 +34,8 @@ impl Config {
             .expect("GOOGLE_OAUTH_CLIENT_SECRET environment variable must be set");
 
         Config {
-            root_url,
+            client_root_url,
+            api_root_url,
             db_host,
             db_name,
             db_user,
