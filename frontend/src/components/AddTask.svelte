@@ -3,6 +3,7 @@
     import { currentTask } from '../store';
     import Box from './Box.svelte';
     import Button from './Button.svelte';
+    import SignInWithGoogle from './auth/SignInWithGoogle.svelte';
 
     export let show: boolean = false;
 </script>
@@ -64,5 +65,6 @@
                 </div>
             </div>
         </form>
+        <SignInWithGoogle />
     </Box>
 {/if}
