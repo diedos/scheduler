@@ -1,28 +1,35 @@
 <script lang="ts">
     import { env } from '$env/dynamic/public';
-    import { accounts, type CredentialResponse } from 'google-one-tap';
     import { onMount } from 'svelte';
+    import type { CredentialResponse } from 'google-one-tap';
 
     export let prompt: boolean = false;
 
     onMount(() => {
-        const handleCredentialResponse = async (response: CredentialResponse) => {
+        const handleCredentialResponse = (response: CredentialResponse) => {
             console.log('Encoded JWT ID token: ' + response.credential);
             alert('Logged in');
         };
 
-        accounts.id.initialize({
-            client_id: env.PUBLIC_GOOGLE_CLIENT_ID || '',
-            callback: handleCredentialResponse
-        });
+        if (typeof google !== 'undefined' && google.accounts) {
+            google.accounts.id.initialize({
+                client_id: env.PUBLIC_GOOGLE_CLIENT_ID || '',
+                callback: handleCredentialResponse
+            });
 
-        accounts.id.renderButton(document.getElementById('google-signin-button') as HTMLElement, {
-            theme: 'outline',
-            size: 'large'
-        });
+            google.accounts.id.renderButton(
+                document.getElementById('google-signin-button') as HTMLElement,
+                {
+                    theme: 'outline',
+                    size: 'large'
+                }
+            );
 
-        if (prompt) {
-            accounts.id.prompt();
+            if (prompt) {
+                google.accounts.id.prompt();
+            }
+        } else {
+            console.error('Google One Tap script not loaded');
         }
     });
 </script>
