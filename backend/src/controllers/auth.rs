@@ -1,8 +1,16 @@
-use axum::{extract::Query, response::Redirect};
-use reqwest;
-use serde::Deserialize;
+use axum::{
+    extract::{Json, Query, State},
+    http::StatusCode,
+    response::{IntoResponse, Redirect},
+};
+use serde::{Deserialize, Serialize};
+use sqlx::PgPool;
+use std::sync::Arc;
 
-use crate::CONFIG;
+use crate::{
+    models::auth::{self, IdentityProvider},
+    CONFIG,
+};
 
 #[derive(Deserialize)]
 pub struct GoogleAuthParams {
@@ -43,4 +51,47 @@ pub async fn google_api_authorization(Query(query): Query<GoogleAuthParams>) -> 
     // TODO: use the token
 
     return Redirect::temporary(&CONFIG.api_root_url);
+}
+
+#[derive(Serialize)]
+pub struct GoogleLoginResponse {
+    pub message: String,
+}
+
+#[derive(Deserialize)]
+pub struct GoogleLoginParams {
+    pub credential: String,
+}
+
+pub async fn google_login(
+    State(db): State<Arc<PgPool>>,
+    Json(payload): Json<GoogleLoginParams>,
+) -> impl IntoResponse {
+    let client = google_jwt_verify::Client::new(&CONFIG.google_oauth_client_id);
+    let id_token = match client.verify_id_token(&payload.credential) {
+        Ok(it) => it,
+        Err(_) => return Err((StatusCode::UNAUTHORIZED, "Unauthorized".to_string())),
+    };
+
+    let user_id = id_token.get_claims().get_subject();
+
+    let user = match auth::get_user_via_idp(State(db), IdentityProvider::Google, &user_id).await {
+        Ok(user) => user,
+        Err(err) => return Err((StatusCode::UNAUTHORIZED, err.to_string())),
+    };
+
+    // Example of extracting data from id_token, adjust as needed
+    let email = id_token.get_payload().get_email();
+    let name = id_token.get_payload().get_name();
+
+    let result = GoogleLoginResponse {
+        message: format!(
+            "Hello, {}! Email {}, user_id {}",
+            name,
+            email,
+            id_token.get_payload().get_picture_url()
+        ),
+    };
+
+    return Ok((StatusCode::OK, Json(result)));
 }

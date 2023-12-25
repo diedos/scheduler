@@ -93,7 +93,7 @@ pub async fn create_task(
         return Err((StatusCode::BAD_REQUEST, "Title is required".to_string()));
     }
 
-    let deadline_at = if let Some(value) = &payload.deadline_at {
+    let deadline_at: Option<NaiveDateTime> = if let Some(value) = &payload.deadline_at {
         NaiveDateTime::parse_from_str(value, "%Y-%m-%dT%H:%M").ok()
     } else {
         None
