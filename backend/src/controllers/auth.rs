@@ -76,7 +76,7 @@ pub async fn google_login(
 
     let user_id = id_token.get_claims().get_subject();
 
-    let user = match auth::get_user_via_idp(State(db), IdentityProvider::Google, &user_id).await {
+    let _user = match auth::get_user_via_idp(State(db), IdentityProvider::Google, &user_id).await {
         Ok(user) => user,
         Err(err) => return Err((StatusCode::UNAUTHORIZED, err.to_string())),
     };

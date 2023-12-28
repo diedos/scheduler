@@ -1,11 +1,8 @@
-use axum::{
-    http::{self, HeaderValue},
-    Router,
-};
+use axum::Router;
 use sqlx::postgres::PgPoolOptions;
 use std::net::SocketAddr;
 use std::sync::Arc;
-use tower_http::cors::{AllowHeaders, AllowOrigin, Any, CorsLayer};
+use tower_http::cors::{AllowHeaders, AllowOrigin, CorsLayer};
 
 mod config;
 mod controllers;
