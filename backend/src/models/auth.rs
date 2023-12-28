@@ -27,6 +27,8 @@ pub async fn get_user_via_idp(
     State(db): State<Arc<PgPool>>,
     provider: IdentityProvider,
     provider_user_id: &str,
+    provider_user_email: &str, // TODO: create a registration flow and move this elsewhere
+    provider_user_display_name: &str, // TODO: create a registration flow and move this elsewhere
 ) -> Result<User, String> {
     let query = sqlx::query_as::<_, User>(
         "SELECT * FROM users
@@ -42,7 +44,13 @@ pub async fn get_user_via_idp(
         Ok(user) => match user {
             Some(user) => user,
             None => {
-                let new_user = register_user(State(db.clone()), "New user", "placeholder").await?;
+                // TODO: do this in a transaction
+                let new_user = register_user(
+                    State(db.clone()),
+                    &provider_user_display_name,
+                    &provider_user_email,
+                )
+                .await?;
                 create_user_idp(State(db), new_user.id, provider, &provider_user_id).await?;
                 new_user
             }

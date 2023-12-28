@@ -16,6 +16,8 @@ use crate::{
 struct UserIdP {
     pub user_provider_id: String,
     pub provider: IdentityProvider,
+    pub user_given_name: String,
+    pub user_email: String,
 }
 
 // #[async_trait]
@@ -61,6 +63,8 @@ pub async fn auth(mut request: Request, next: Next) -> Result<Response, (StatusC
     let user_idp = UserIdP {
         user_provider_id: jwt.get_claims().get_subject().to_string(),
         provider,
+        user_given_name: jwt.get_payload().get_given_name().to_string(),
+        user_email: jwt.get_payload().get_email().to_string(),
     };
 
     let db = match request.extensions().get::<Arc<PgPool>>().cloned() {
@@ -74,11 +78,18 @@ pub async fn auth(mut request: Request, next: Next) -> Result<Response, (StatusC
     };
 
     // TODO: Cache user data. Now we are fetching it from the database on every request.
-    let get_user =
-        match get_user_via_idp(State(db), user_idp.provider, &user_idp.user_provider_id).await {
-            Ok(user) => user,
-            Err(err) => return Err((StatusCode::UNAUTHORIZED, err.to_string())),
-        };
+    let get_user = match get_user_via_idp(
+        State(db),
+        user_idp.provider,
+        &user_idp.user_provider_id,
+        &user_idp.user_email,
+        &user_idp.user_given_name,
+    )
+    .await
+    {
+        Ok(user) => user,
+        Err(err) => return Err((StatusCode::UNAUTHORIZED, err.to_string())),
+    };
 
     request.extensions_mut().insert(get_user);
 

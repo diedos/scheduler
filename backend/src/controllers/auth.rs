@@ -4,7 +4,7 @@ use axum::{
     response::{IntoResponse, Redirect},
     Extension,
 };
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use sqlx::PgPool;
 use std::sync::Arc;
 
@@ -54,11 +54,6 @@ pub async fn google_api_authorization(Query(query): Query<GoogleAuthParams>) -> 
     return Redirect::temporary(&CONFIG.api_root_url);
 }
 
-#[derive(Serialize)]
-pub struct GoogleLoginResponse {
-    pub message: String,
-}
-
 #[derive(Deserialize)]
 pub struct GoogleLoginParams {
     pub credential: String,
@@ -76,23 +71,21 @@ pub async fn google_login(
 
     let user_id = id_token.get_claims().get_subject();
 
-    let _user = match auth::get_user_via_idp(State(db), IdentityProvider::Google, &user_id).await {
+    let user_email = id_token.get_payload().get_email(); // TODO: create a registration flow and move this elsewhere
+    let user_name = id_token.get_payload().get_given_name(); // TODO: create a registration flow and move this elsewhere
+
+    let _user = match auth::get_user_via_idp(
+        State(db),
+        IdentityProvider::Google,
+        &user_id,
+        &user_email,
+        &user_name,
+    )
+    .await
+    {
         Ok(user) => user,
         Err(err) => return Err((StatusCode::UNAUTHORIZED, err.to_string())),
     };
 
-    // Example of extracting data from id_token, adjust as needed
-    let email = id_token.get_payload().get_email();
-    let name = id_token.get_payload().get_name();
-
-    let result = GoogleLoginResponse {
-        message: format!(
-            "Hello, {}! Email {}, user_id {}",
-            name,
-            email,
-            id_token.get_payload().get_picture_url()
-        ),
-    };
-
-    return Ok((StatusCode::OK, Json(result)));
+    return Ok(StatusCode::OK);
 }
