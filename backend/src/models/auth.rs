@@ -6,7 +6,7 @@ use sqlx::{types::chrono::NaiveDateTime, FromRow, PgPool};
 
 use crate::utils::serializers::serialize_dt;
 
-#[derive(Serialize, FromRow, Debug)]
+#[derive(Serialize, FromRow, Debug, Clone)]
 pub struct User {
     pub id: i32,
     #[serde(serialize_with = "serialize_dt")]
