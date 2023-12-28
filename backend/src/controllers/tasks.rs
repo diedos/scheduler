@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
 use axum::http::StatusCode;
+use axum::Extension;
 use serde::Deserialize;
 use sqlx::types::chrono::NaiveDateTime;
 use sqlx::PgPool;
@@ -9,7 +10,7 @@ use sqlx::PgPool;
 use crate::models::tasks::*;
 
 pub async fn get_tasks(
-    State(db): State<Arc<PgPool>>,
+    Extension(db): Extension<Arc<PgPool>>,
     Json(payload): Json<GetTasksPayload>,
 ) -> Result<(StatusCode, Json<Vec<TodoTask>>), (StatusCode, String)> {
     if let Some(value) = &payload.completed {
@@ -23,7 +24,7 @@ pub async fn get_tasks(
 }
 
 pub async fn delete_task(
-    State(db): State<Arc<PgPool>>,
+    Extension(db): Extension<Arc<PgPool>>,
     Path(id): Path<i32>,
 ) -> Result<(StatusCode, Json<TodoTask>), (StatusCode, String)> {
     let query = "DELETE FROM tasks WHERE id = $1 RETURNING *";
@@ -39,7 +40,7 @@ pub async fn delete_task(
 }
 
 pub async fn complete_task(
-    State(db): State<Arc<PgPool>>,
+    Extension(db): Extension<Arc<PgPool>>,
     Path(id): Path<i32>,
 ) -> Result<(StatusCode, Json<TodoTask>), (StatusCode, String)> {
     let query = "UPDATE tasks SET completed_at = NOW() WHERE id = $1";
@@ -61,7 +62,7 @@ pub async fn complete_task(
 }
 
 pub async fn get_task(
-    State(db): State<Arc<PgPool>>,
+    Extension(db): Extension<Arc<PgPool>>,
     Path(id): Path<i32>,
 ) -> Result<(StatusCode, Json<TodoTask>), (StatusCode, String)> {
     let query = "SELECT * FROM tasks WHERE id = $1";
@@ -86,7 +87,7 @@ pub struct CreateTaskPayload {
 }
 
 pub async fn create_task(
-    State(db): State<Arc<PgPool>>,
+    Extension(db): Extension<Arc<PgPool>>,
     Json(payload): Json<CreateTaskPayload>,
 ) -> Result<(StatusCode, Json<TodoTask>), (StatusCode, String)> {
     if payload.title.is_empty() {

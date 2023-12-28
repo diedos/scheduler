@@ -2,6 +2,7 @@ use axum::{
     extract::{Json, Query, State},
     http::StatusCode,
     response::{IntoResponse, Redirect},
+    Extension,
 };
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
@@ -64,7 +65,7 @@ pub struct GoogleLoginParams {
 }
 
 pub async fn google_login(
-    State(db): State<Arc<PgPool>>,
+    Extension(db): Extension<Arc<PgPool>>,
     Json(payload): Json<GoogleLoginParams>,
 ) -> impl IntoResponse {
     let client = google_jwt_verify::Client::new(&CONFIG.google_oauth_client_id);

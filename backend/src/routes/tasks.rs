@@ -1,14 +1,11 @@
-use std::sync::Arc;
-
 use axum::{
     routing::{get, post},
     Router,
 };
-use sqlx::PgPool;
 
 use crate::controllers::tasks::*;
 
-pub fn tasks_router() -> Router<Arc<PgPool>> {
+pub fn tasks_router() -> Router {
     Router::new()
         .route("/", get(get_tasks).post(create_task))
         .route("/:id", get(get_task).delete(delete_task))
