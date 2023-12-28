@@ -1,11 +1,15 @@
-use axum::Router;
+use axum::{
+    http::{self, HeaderValue},
+    Router,
+};
 use sqlx::postgres::PgPoolOptions;
 use std::net::SocketAddr;
 use std::sync::Arc;
-use tower_http::cors::{Any, CorsLayer};
+use tower_http::cors::{AllowHeaders, AllowOrigin, Any, CorsLayer};
 
 mod config;
 mod controllers;
+mod middlewares;
 mod models;
 mod routes;
 mod utils;
@@ -31,21 +35,17 @@ async fn main() -> Result<(), sqlx::Error> {
 
     let db = Arc::new(db_pool);
 
-    //let origins = ["http://localhost:5173".parse().unwrap()];
-    let cors = CorsLayer::new().allow_origin(Any);
+    let cors = CorsLayer::new()
+        .allow_origin(AllowOrigin::any())
+        .allow_headers(AllowHeaders::any());
 
-    let app = Router::new()
-        .merge(root_router())
-        .with_state(db)
-        .layer(cors);
+    let app = Router::new().merge(root_router(db.clone())).layer(cors);
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
     println!("listening on {}", addr);
 
-    axum::Server::bind(&addr)
-        .serve(app.into_make_service())
-        .await
-        .unwrap();
+    let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
+    axum::serve(listener, app).await.unwrap();
 
     Ok(())
 }
